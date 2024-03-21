@@ -20,7 +20,8 @@
 //
 // No hints this time!
 
-// I AM NOT DONE
+
+use std::collections::HashMap;
 
 pub enum Command {
     Uppercase,
@@ -30,13 +31,31 @@ pub enum Command {
 
 mod my_module {
     use super::Command;
-
     // TODO: Complete the function signature!
-    pub fn transformer(input: ???) -> ??? {
+    fn add_string(mut outpt: Vec<String>, mut s: String ,count: i32) -> Vec<String>{
+        for i in 0..count {
+            s += "bar";
+        }
+        outpt.push(s);
+        outpt
+    }
+    pub fn transformer(input: Vec<(String,Command)>) -> Vec<String> {
         // TODO: Complete the output declaration!
-        let mut output: ??? = vec![];
+        let mut output: Vec<String> = vec![];
         for (string, command) in input.iter() {
             // TODO: Complete the function body. You can do it!
+            match command {
+                Command::Uppercase => output.push(string.to_uppercase()),
+                Command::Trim =>output.push(string.trim().to_string()),
+                Command::Append(x) => output = add_string(output.clone(), string.to_string(), *x as i32),// 利用if let和while let在match外面解决这一种类；或者写一个函数当成此项匹配的执行内容看行不行
+                // output.push(string.to_string()),
+                // for i in 0..*x as i32 {
+                //     output[output.len()-1] += "bar";
+                // },
+                // while let *x > 0 {
+                // }
+                _ => panic!(),
+            }
         }
         output
     }
@@ -45,12 +64,12 @@ mod my_module {
 #[cfg(test)]
 mod tests {
     // TODO: What do we need to import to have `transformer` in scope?
-    use ???;
     use super::Command;
-
+    
+    // use creat::my_module::transformer;
     #[test]
     fn it_works() {
-        let output = transformer(vec![
+        let output = crate::my_module::transformer(vec![
             ("hello".into(), Command::Uppercase),
             (" all roads lead to rome! ".into(), Command::Trim),
             ("foo".into(), Command::Append(1)),
